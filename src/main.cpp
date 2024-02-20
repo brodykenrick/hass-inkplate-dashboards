@@ -1,17 +1,29 @@
 // Next 3 lines are a precaution, you can ignore those, and the example would also work without them
-#if !defined(ARDUINO_INKPLATE10) && !defined(ARDUINO_INKPLATE10V2)
-#error "Wrong board selection for this example, please select Inkplate 10 in the boards menu."
+#if !defined(ARDUINO_INKPLATE10) && !defined(ARDUINO_INKPLATE10V2)&& !defined(ARDUINO_INKPLATECOLOR)
+#error "Wrong board selection for this example, please select Inkplate 10,10v2 or 6."
 #endif
 
 #if defined(ARDUINO_INKPLATE10) && defined(ARDUINO_INKPLATE10V2)
-#error "You can only define ARDUINO_INKPLATE10 or ARDUINO_INKPLATE10V2, not both"
+#error "You can only define one board."
+#endif
+
+#if defined(ARDUINO_INKPLATE10) && defined(ARDUINO_INKPLATECOLOR)
+#error "You can only define one board."
+#endif
+
+#if defined(ARDUINO_INKPLATECOLOR) && defined(ARDUINO_INKPLATE10V2)
+#error "You can only define one board."
 #endif
 
 #include <driver/rtc_io.h> //ESP32 library used for deep sleep and RTC wake up pins
 #include <rom/rtc.h>       // Include ESP32 library for RTC (needed for rtc_get_reset_reason() function)
 #include "homeplate.h"
 
+#if 0
 Inkplate display(INKPLATE_1BIT);
+#else
+Inkplate display;
+#endif
 SemaphoreHandle_t mutexI2C, mutexSPI, mutexDisplay;
 
 bool sleepBoot = false;
@@ -58,7 +70,11 @@ void setup()
 
     // setup display
     if (sleepBoot)
+    {
+        #if 0 // getPanelDeepSleepState ???
         display.preloadScreen(); // copy saved screen state to buffer
+        #endif
+    }
     display.clearDisplay();      // Clear frame buffer of display
     i2cEnd();
     displayEnd();
@@ -75,7 +91,11 @@ void setup()
     Serial.printf("[SETUP] Battery: %d%% (%.2fv)\n", percent, voltage);
 
     if (!sleepBoot)
+    {
+        #if 0
         splashScreen();
+        #endif
+    }
 
     if (USE_SDCARD)
     {

@@ -135,7 +135,9 @@ void displayBatteryWarning()
     snprintf(statusBuffer, buf_size, "WARNING: battery %u%%", percent);
 
     displayStart();
+    #if 0 //Not a fn for inkplatecolor
     display.selectDisplayMode(INKPLATE_1BIT);
+    #endif
     display.setTextColor(BLACK, WHITE);
     display.setFont(&Roboto_16);
     display.setTextSize(1);
@@ -162,7 +164,11 @@ void displayBatteryWarning()
 
     // text to print over box
     display.print(statusBuffer);
+    #if 0
     display.partialUpdate(sleepBoot);
+    #else
+    display.display();
+    #endif
     displayEnd();
     i2cEnd();
 }

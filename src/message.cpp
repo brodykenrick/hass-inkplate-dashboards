@@ -60,7 +60,9 @@ void displayMessage(const char *m)
     Serial.printf("[MESSAGE] rendering message: %s\n", message);
 
     displayStart();
+    #if 0 //Not a fn for inkplatecolor
     display.selectDisplayMode(INKPLATE_1BIT);
+    #endif
     display.setTextColor(BLACK, WHITE);
     display.setTextSize(1);
     display.clearDisplay();

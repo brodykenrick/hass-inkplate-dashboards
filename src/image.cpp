@@ -25,6 +25,7 @@ bool remotePNG(const char *url)
     Serial.print("[IMAGE] Downloading image: ");
     Serial.println(url);
     // set len for png image, or set 54373?
+    //TODO: Adjust size to allow for colors later on....
     static int32_t defaultLen = E_INK_WIDTH * E_INK_HEIGHT * 4 + 100;
     uint8_t *buff = display.downloadFile(url, &defaultLen);
     if (!buff)
@@ -42,11 +43,14 @@ bool remotePNG(const char *url)
         displayEnd();
         return false;
     }
+    Serial.printf("[IMAGE] length = %d\n", defaultLen);
     Serial.println("[IMAGE] Download done");
-    displayStatusMessage("Rendering image...");
+    displayStatusMessage("Rendering image..."); //Is this getting in the way?
 
     displayStart();
+    #if 0 //Not a fn for inkplatecolor
     display.selectDisplayMode(INKPLATE_3BIT); // set grayscale mode
+    #endif
     display.clearDisplay();                   // refresh the display buffer before rendering.
     displayEnd();
 
@@ -80,6 +84,7 @@ bool remotePNG(const char *url)
     displayStart();
     display.display();
     // wait before releasing the i2c bus while the display settles. Helps prevent image fading
+    //TODO: Even more of this?
     vTaskDelay(0.25 * SECOND/portTICK_PERIOD_MS);
     displayEnd();
     i2cEnd();
@@ -180,14 +185,24 @@ void displayStatusMessage(const char *format, ...)
 
     i2cStart();
     displayStart();
+    #if 0 //Not a fn for inkplatecolor
     display.selectDisplayMode(INKPLATE_1BIT);
     display.setTextColor(BLACK, WHITE);       // Set text color to black on white
+    #else
+    display.setTextColor(INKPLATE_RED, WHITE);       // Set text color on white
+    #endif
+
+    
     display.setFont(&Roboto_16);
     display.setTextSize(1);
 
     const int16_t pad = 3;           // padding
     const int16_t mar = 5;           // margin
+    #if 0
     const int16_t statusWidth = 400; // extra space to clear for text
+    #else
+    const int16_t statusWidth = 50; // extra space to clear for text
+    #endif
     const int16_t x = mar;
     const int16_t y = E_INK_HEIGHT - mar;
 
@@ -199,32 +214,50 @@ void displayStatusMessage(const char *format, ...)
     // background box to set internal buffer colors
     display.fillRect(x - pad, y - pad - h, max(w + (pad * 2), statusWidth), h + (pad * 2), WHITE);
     //Serial.printf("fillRect(x:%u, y:%u, w:%u, h:%u)\n", x-pad, y-pad-h, max(w+(pad*2), 400), h+(pad*2));
+    #if 0
     display.partialUpdate(sleepBoot);
+    #else
+    display.display();
+    #endif
 
     // display status message
     display.setCursor(x, y);
 
     // text to print over box
     display.print(statusBuffer);
+    #if 0
     display.partialUpdate(sleepBoot);
+    #else
+    display.display();
+    #endif
     displayEnd();
     i2cEnd();
 }
 
 void splashScreen()
 {
-    static const char *splashName = "HomePlate";
+    #if 0
+    static const char *splashName = "HomePlate10";
+    #else
+    static const char *splashName = "HomePlate6";
+    #endif
     displayStart();
-    display.selectDisplayMode(INKPLATE_1BIT); // testing
+    #if 0 //Not a fn for inkplatecolor
+    display.selectDisplayMode(INKPLATE_1BIT);
     display.setTextColor(BLACK, WHITE);       // Set text color to black on white
+    #else
+    display.setTextColor(INKPLATE_GREEN, WHITE);       // Set text color to black on white
+    #endif
     display.setFont(&Roboto_128);
     display.setTextSize(1);
 
-    // Roboto_64, size: 1, center (439, 437)
-    // Roboto_64, size: 2, center (279, 461)
-    // Roboto_128, size: 1, center (285, 461)
+    #if 0
     int16_t x = 285;
     int16_t y = 461;
+    #else
+    int16_t x = 85;
+    int16_t y = 150;
+    #endif
     bool dynamicPlacement = false;
     if (dynamicPlacement)
     {
@@ -236,7 +269,6 @@ void splashScreen()
         y = (E_INK_HEIGHT - h) / 2 + h;
         Serial.printf("SplashScreen location (%d, %d)\n", x, y);
     }
-
     display.setCursor(x, y);
 
     // text to print over box
@@ -244,7 +276,11 @@ void splashScreen()
     displayEnd();
     i2cStart();
     displayStart();
+    #if 0
     display.partialUpdate(sleepBoot);
+    #else
+    display.display();
+    #endif
     displayEnd();
     i2cEnd();
 }

@@ -95,9 +95,17 @@ void runActivities(void *params)
                 continue;
             }
             // get & render hass image
+            #if 0
             delaySleep(20);
+            #else
+            delaySleep(240);
+            #endif
             remotePNG(IMAGE_URL);
+            #if 0
             // delaySleep(10);
+            #else
+            delaySleep(240);
+            #endif
             break;
         case GuestWifi:
             setSleepDuration(TIME_TO_QUICK_SLEEP_SEC);
@@ -116,12 +124,21 @@ void runActivities(void *params)
             waitForWiFiOrActivityChange();
             if (resetActivity)
             {
-                Serial.printf("[ACTIVITY][ERROR] HomeAssistant Activity reset while waiting, aborting...\n");
+                Serial.printf("[ACTIVITY][ERROR] IMG Activity reset while waiting, aborting...\n");
                 continue;
             }
             // get & render image
+            #if 0
             delaySleep(20);
+            #else
+            delaySleep(240);
+            #endif
             remotePNG(getMessage());
+            #if 0
+            #else
+            delaySleep(240);
+            #endif
+
             break;
         default:
             Serial.printf("[ACTIVITY][ERROR] runActivities() unhandled Activity: %d\n", activityNext);

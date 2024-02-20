@@ -22,7 +22,9 @@ void displayWiFiQR()
 
     // serialPrintQR(qrcode);  // for testing
     displayStart();
+    #if 0 //Not a fn for inkplatecolor
     display.selectDisplayMode(INKPLATE_1BIT);
+    #endif
     display.setTextColor(BLACK, WHITE); // Set text color to black on white
     display.setFont(&Roboto_64);
     display.setTextSize(1);
@@ -55,11 +57,13 @@ void renderQR(QRCode qrcode, uint32_t x, uint32_t y, uint32_t size)
     // set correct color based on display mode
     uint16_t foreground = BLACK;
     uint16_t background = WHITE;
+    #if 0
     if (display.getDisplayMode() == INKPLATE_3BIT)
     {
         foreground = C_BLACK;
         background = C_WHITE;
     }
+    #endif
 
     // set the correct pixels
     for (uint8_t j = 0; j < qrcode.size; j++)

@@ -77,7 +77,11 @@ void mqttSendTempStatus()
   int temperature = 0;
   i2cStart();
   displayStart();
+  #if 0 //Not a fn for inkplatecolor
   temperature = temperature + display.readTemperature();
+  #else
+  temperature = -1;
+  #endif
   displayEnd();
   i2cEnd();
 

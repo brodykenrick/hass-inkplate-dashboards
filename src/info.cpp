@@ -48,7 +48,9 @@ void displayInfoScreen()
 
   i2cStart();
   displayStart();
+  #if 0 //Not a fn for inkplatecolor
   display.selectDisplayMode(INKPLATE_1BIT);
+  #endif
   display.setTextColor(BLACK, WHITE);
   display.clearDisplay();
 
@@ -139,7 +141,12 @@ void displayInfoScreen()
   display.printf("%d%% (%.2fv)", percent, voltage);
   // temp
   y += lineHeight;
-  int temp = display.readTemperature();
+  int temp = 0;
+  #if 0 // Not supported on inkplatecolor (inkplate 6 w/ Color)
+  temp = display.readTemperature();
+  #else
+  temp = 22;
+  #endif
   int tempF = (temp * 9 / 5) + 32;
   display.setCursor(COL1_NAME_X, y);
   display.print("Temperature:");
