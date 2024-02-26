@@ -25,7 +25,7 @@
 // How often to re-sync the clock to NTP
 #define NTP_SYNC_INTERVAL (24*60)/TIME_TO_SLEEP_MIN // ~ once a day when updating every TIME_TO_SLEEP_MIN minutes
 
-// URL of PNG image to display
+// URL of PNG image to display (must have the extension in it)
 #define IMAGE_URL "HTTP URL of dashboard screenshot to display"
 
 // WiFi QR Code

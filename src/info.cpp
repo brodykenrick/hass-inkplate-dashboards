@@ -65,7 +65,12 @@ void displayInfoScreen()
 
   // column 1
   // HW
+  #if 0 // Not supported on inkplatecolor (inkplate 6 w/ Color)
   y = 250;
+  #else
+  y = 50;
+  #endif
+  
   display.setCursor(COL1_NAME_X, y);
   display.print("Hardware:");
   display.setCursor(COL1_DATA_X, y);
@@ -145,7 +150,7 @@ void displayInfoScreen()
   #if 0 // Not supported on inkplatecolor (inkplate 6 w/ Color)
   temp = display.readTemperature();
   #else
-  temp = 22;
+  temp = -1;
   #endif
   int tempF = (temp * 9 / 5) + 32;
   display.setCursor(COL1_NAME_X, y);
@@ -154,7 +159,11 @@ void displayInfoScreen()
   display.printf("%dC (%dF)", temp, tempF);
 
   // column 2
+  #if 0 // Not supported on inkplatecolor (inkplate 6 w/ Color)
   y = 250;
+  #else
+  y = 50;
+  #endif
   // network
   display.setCursor(COL2_NAME_X, y);
   display.print("Hostname:");
