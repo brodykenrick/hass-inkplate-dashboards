@@ -29,28 +29,6 @@ bool remotePNG(const char *url)
     Serial.print("[IMAGE] Downloading image: ");
     Serial.println(url);
 
-    //static int32_t defaultLen = E_INK_WIDTH * E_INK_HEIGHT * 8 + 500;
-    //Serial.printf("[IMAGE] length prepare with default = %d\n", defaultLen);
-    //uint8_t *buff = display.downloadFile(url, &defaultLen);
-    //if (!buff)
-    //{
-    //    Serial.println("[IMAGE] Download failed");
-    //    displayStatusMessage("Download failed!");
-    //    return false;
-    //}
-    // check for stop after download before rendering
-    //if (stopActivity())
-    //{
-    //    free(buff);
-    //    displayStart();
-    //    display.clearDisplay(); // refresh the display buffer before rendering.
-    //    displayEnd();
-    //    return false;
-    //}
-    //Serial.printf("[IMAGE] length = %d\n", defaultLen);
-    //Serial.println("[IMAGE] Download done");
-    //displayStatusMessage("Rendering image...");
-
     displayStart();
     #if 0 //Not a fn for inkplatecolor
     display.selectDisplayMode(INKPLATE_3BIT); // set grayscale mode
@@ -59,70 +37,14 @@ bool remotePNG(const char *url)
     displayEnd();
 
 
-    #if 0
-    // Buffer render
-    // Original (local code that seems to be modified to not do some useful things for inkplate6color)
-    // display the image
-    if (drawPngFromBuffer(buff, defaultLen, 0, 0))
-    {
-        Serial.println("[IMAGE] Image render ready");
-        if (DISPLAY_LAST_UPDATE_TIME) {
-            displayStats();
-        }
-    }
-    else
-    {
-        // If is something failed (wrong filename or format), write error message on the screen.
-        displayStart();
-        display.clearDisplay();
-        displayEnd();
-        displayStatusMessage("Image display error");
-    }
-
-    #elif 1
-
-
     display.println("drawImage from web from our HAss dash....");
-    if (!display.drawImage("http://homeassistant.local:5006/1.png", 0, 0, true, false))
+    if (!display.drawImage(url, 0, 0, true, false))
     {
         // If is something failed (wrong filename or format), write error message on the screen.
         display.println("Image open error");
         display.display();
     }
 
-    #elif 0
-
-    display.println("drawImage from web....");
-    if (!display.drawImage("https://upload.wikimedia.org/wikipedia/commons/7/70/Example.png", 0, 0, true, false))
-    {
-        // If is something failed (wrong filename or format), write error message on the screen.
-        display.println("Image open error");
-        display.display();
-    }
-
-    #elif 0
-   
-    display.println("drawImage from web....");
-    if (!display.drawImage("https://varipass.org/destination.jpg", 0, 0, true, false))
-    {
-        // If is something failed (wrong filename or format), write error message on the screen.
-        display.println("Image open error");
-        display.display();
-    }
-    
-    #else
-    https://github.com/SolderedElectronics/Inkplate-Arduino-library/blob/master/examples/Inkplate6COLOR/Basic/Inkplate6COLOR_Full_Screen_Colors/Inkplate6COLOR_Full_Screen_Colors.ino
-    // Draw a full screen of all colors
-    display.fillRect(0, 0, 600 / 7 + 2, 448, INKPLATE_BLACK);
-    display.fillRect(1 * 600 / 7, 0, 600 / 7 + 2, 448, INKPLATE_WHITE);
-    display.fillRect(2 * 600 / 7, 0, 600 / 7 + 2, 448, INKPLATE_GREEN);
-    display.fillRect(3 * 600 / 7, 0, 600 / 7 + 2, 448, INKPLATE_BLUE);
-    display.fillRect(4 * 600 / 7, 0, 600 / 7 + 2, 448, INKPLATE_RED);
-    display.fillRect(5 * 600 / 7, 0, 600 / 7 + 2, 448, INKPLATE_YELLOW);
-    display.fillRect(6 * 600 / 7, 0, 600 / 7 + 2, 448, INKPLATE_ORANGE);
-    #endif
-
-    //free(buff);
 
     
     // check for stop (could have happened inside drawPngFromBuffer())
