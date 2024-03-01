@@ -404,30 +404,9 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
       }
     }
 
-    if (strncmp("qr", action, 3) == 0)
-    {
-      startActivity(GuestWifi);
-      return;
-    }
-    else if (strncmp("info", action, 5) == 0)
-    {
-      startActivity(Info);
-      return;
-    }
-    else if (strncmp("hass", action, 5) == 0)
+    if (strncmp("hass", action, 5) == 0)
     {
       startActivity(HomeAssistant);
-      return;
-    }
-    else if (strncmp("message", action, 9) == 0)
-    {
-      if (!doc.containsKey("message"))
-      {
-        Serial.printf("[MQTT][ERROR] message action has no message!\n");
-        return;
-      }
-      setMessage(doc["message"]);
-      startActivity(Message);
       return;
     }
     else if (strncmp("img", action, 4) == 0)

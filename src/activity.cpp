@@ -107,18 +107,6 @@ void runActivities(void *params)
             delaySleep(240);
             #endif
             break;
-        case GuestWifi:
-            setSleepDuration(TIME_TO_QUICK_SLEEP_SEC);
-            displayWiFiQR();
-            break;
-        case Info:
-            setSleepDuration(TIME_TO_QUICK_SLEEP_SEC);
-            displayInfoScreen();
-            break;
-        case Message:
-            setSleepDuration(TIME_TO_SLEEP_SEC);
-            displayMessage();
-            break;
         case IMG:
             setSleepDuration(TIME_TO_SLEEP_SEC);
             waitForWiFiOrActivityChange();

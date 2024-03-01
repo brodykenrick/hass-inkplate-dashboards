@@ -54,15 +54,10 @@ void wifiStopTask();
 void waitForWiFi();
 bool getWifIFailed();
 
-// QR
-void displayWiFiQR();
 
-// info
-void displayInfoScreen();
 
 // Image
 bool remotePNG(const char *);
-bool drawPngFromBuffer(uint8_t *buff, int32_t len, int x, int y);
 uint16_t centerTextX(const char *t, int16_t x1, int16_t x2, int16_t y, bool lock = true);
 void displayStatusMessage(const char *format, ...);
 void splashScreen();
@@ -112,7 +107,6 @@ void printDebug(const char *s);
 
 // message
 void setMessage(const char *m);
-void displayMessage(const char * = NULL);
 const char* getMessage();
 
 // activity
@@ -120,9 +114,6 @@ enum Activity
 {
     NONE,
     HomeAssistant,
-    GuestWifi,
-    Info,
-    Message,
     IMG,
 };
 
