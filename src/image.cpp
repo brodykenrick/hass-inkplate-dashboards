@@ -1,5 +1,4 @@
 #include "homeplate.h"
-#include <libs/pngle/pngle.h>
 
 void displayStats()
 {
@@ -44,10 +43,8 @@ bool remotePNG(const char *url)
         display.println("Image open error");
         display.display();
     }
-
-
-    
-    // check for stop (could have happened inside drawPngFromBuffer())
+   
+    // check for stop - it could have happened inside drawImage()
     if (stopActivity())
     {
         displayStart();
@@ -74,62 +71,6 @@ bool remotePNG(const char *url)
 static uint16_t _pngX = 0;
 static uint16_t _pngY = 0;
 
-// copied from ImagePNG from inkplate library with color code removed
-// Revisit this -- why was it copied across?
-void pngle_draw_callback(pngle_t *pngle, uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint8_t rgba[4])
-{
-    if (rgba[3])
-    {
-        for (int j = 0; j < h; ++j)
-        {
-            for (int i = 0; i < w; ++i)
-            {
-                if (stopActivity())
-                    return;
-                uint8_t r = rgba[0];
-                uint8_t g = rgba[1];
-                uint8_t b = rgba[2];
-
-                pngle_ihdr_t *ihdr = pngle_get_ihdr(pngle);
-
-                // if 1 bit....
-                if (ihdr->depth == 1)
-                    r = g = b = (b ? 0xFF : 0);
-
-                // RGB3BIT(r, g, b) ((54UL * (r) + 183UL * (g) + 19UL * (b)) >> 13)
-                uint8_t px = RGB3BIT(r, g, b);
-
-                display.drawPixel(_pngX + x + i, _pngY + y + j, px);
-            }
-        }
-    }
-}
-
-//Would be great to get https://github.com/SolderedElectronics/Inkplate-Arduino-library/pull/210/files....
-// Depending on task priority, this can take between 5-30s
-bool drawPngFromBuffer(uint8_t *buff, int32_t len, int x, int y)
-{
-    _pngX = x;
-    _pngY = y;
-
-    bool ret = 1;
-
-    if (!buff)
-        return 0;
-
-    pngle_t *pngle = pngle_new();
-    pngle_set_draw_callback(pngle, pngle_draw_callback);
-
-    displayStart();
-    if (pngle_feed(pngle, buff, len) < 0)
-    {
-        ret = 0;
-    }
-    displayEnd();
-
-    pngle_destroy(pngle);
-    return ret;
-}
 
 // returns height
 // y value should be the top of the text location
