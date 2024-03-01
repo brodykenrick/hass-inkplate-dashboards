@@ -54,11 +54,11 @@ void startOTATask()
 
                      // NOTE: if updating SPIFFS this would be the place to unmount SPIFFS using SPIFFS.end()
                      Serial.printf("[OTA] Start OTA updating %s\n", type.c_str());
-                     displayStatusMessage("Start OTA updating %s", type.c_str()); })
+
+                     })
         .onEnd([]()
                {
                    Serial.println("\n[OTA] End");
-                   displayStatusMessage("OTA Finished");
                    //otaRunning = false; on finish should restart OTA, going to sleep can interfere.
                 })
         .onProgress([](unsigned int progress, unsigned int total)
@@ -78,7 +78,6 @@ void startOTATask()
                          Serial.println("Receive Failed");
                      else if (error == OTA_END_ERROR)
                          Serial.println("End Failed");
-                     displayStatusMessage("OTA Error[%u]", error);
                      otaRunning = false; });
 
     xTaskCreate(

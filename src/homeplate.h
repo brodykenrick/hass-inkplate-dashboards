@@ -58,9 +58,6 @@ bool getWifIFailed();
 
 // Image
 bool remotePNG(const char *);
-uint16_t centerTextX(const char *t, int16_t x1, int16_t x2, int16_t y, bool lock = true);
-void displayStatusMessage(const char *format, ...);
-void splashScreen();
 
 // Input
 void startMonitoringButtonsTask();
@@ -102,7 +99,6 @@ uint getBatteryPercent(double voltage);
 void printChipInfo();
 void lowBatteryCheck();
 void printDebugStackSpace();
-void displayBatteryWarning();
 void printDebug(const char *s);
 
 // message

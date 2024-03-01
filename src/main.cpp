@@ -79,8 +79,6 @@ void setup()
     i2cEnd();
     displayEnd();
 
-    displayStatusMessage("Boot %d %s", bootCount, bootReason());
-
     // print battery state
     double voltage = 0;
     i2cStart();
@@ -89,13 +87,6 @@ void setup()
     voltage = roundf(voltage * 100) / 100; // rounds to 2 decimal places
     int percent = getBatteryPercent(voltage);
     Serial.printf("[SETUP] Battery: %d%% (%.2fv)\n", percent, voltage);
-
-    if (!sleepBoot)
-    {
-        #if 0
-        splashScreen();
-        #endif
-    }
 
     if (USE_SDCARD)
     {

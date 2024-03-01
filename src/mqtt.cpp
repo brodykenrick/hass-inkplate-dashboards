@@ -298,7 +298,6 @@ void connectToMqtt(void *params)
     if (!mqttClient.connected())
     {
       Serial.println("[MQTT] FAILED");
-      displayStatusMessage("MQTT failed!");
       mqttFailed = true;
       // if sleep is enabled, we'll likely sleep before this continues
       vTaskDelay(MQTT_RECOVER_TIME_MS / portTICK_PERIOD_MS);

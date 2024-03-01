@@ -31,7 +31,6 @@ void WiFiGotIP(WiFiEvent_t event, WiFiEventInfo_t info)
 {
     wifiFailed = false;
     Serial.printf("[WIFI] IP address: %s\n", WiFi.localIP().toString().c_str());
-    displayStatusMessage("WiFi connected");
 }
 
 void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info)
@@ -75,7 +74,6 @@ void keepWiFiAlive(void *parameter)
         if (WiFi.status() != WL_CONNECTED)
         {
             Serial.println("[WIFI] FAILED");
-            displayStatusMessage("WiFi failed!");
             wifiFailed = true;
             // if sleep is enabled, we'll likely sleep before this continues
             vTaskDelay(WIFI_RECOVER_TIME_MS / portTICK_PERIOD_MS);

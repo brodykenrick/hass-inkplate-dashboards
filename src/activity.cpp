@@ -131,8 +131,6 @@ void runActivities(void *params)
         default:
             Serial.printf("[ACTIVITY][ERROR] runActivities() unhandled Activity: %d\n", activityNext);
         }
-        // check and display a low battery warning if needed
-        displayBatteryWarning();
 
         // send new MQTT status
         sendMQTTStatus();

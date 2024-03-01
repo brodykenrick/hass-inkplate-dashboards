@@ -7,7 +7,7 @@
 
 // hostname
 // NOTE: if using multiple homeplate devices, you MUST make the hostname unique
-#define HOSTNAME "homeplate"
+#define HOSTNAME "homeplate6"
 
 // How long to sleep between image refreshes
 #define TIME_TO_SLEEP_MIN 20
@@ -28,9 +28,6 @@
 // URL of PNG image to display (must have the extension in it)
 #define IMAGE_URL "HTTP URL of dashboard screenshot to display"
 
-// WiFi QR Code
-#define QR_WIFI_NAME "Guest WiFi Network Name"
-#define QR_WIFI_PASSWORD "Guest WiFi Password"
 
 // MQTT Broker
 #define MQTT_HOST "MQTT Broker IP"
@@ -39,8 +36,8 @@
 //#define MQTT_USER "mqtt username"
 //#define MQTT_PASSWORD "mqtt password"
 // Customize node id and device name if needed
-//#define MQTT_NODE_ID "homeplate"	// defaults to HOSTNAME
-//#define MQTT_DEVICE_NAME "HomePlate"	// defaults to "HomePlate"
+//#define MQTT_NODE_ID "homeplate6"	// defaults to HOSTNAME
+//#define MQTT_DEVICE_NAME "HomePlate6"	// defaults to "HomePlate"
 
 // Disables touchpads if they are overly sensitive and result in phantom touch events
 // Touchpads are not supported on the Inkplate10v2. This must be false if ARDUINO_INKPLATE10V2 is set
