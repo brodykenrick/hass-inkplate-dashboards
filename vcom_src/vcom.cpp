@@ -55,7 +55,7 @@ void programEEPROM()
         writeVCOMToEEPROM(vcomVoltage);
         EEPROM.write(EEPROMaddress, 170);
         EEPROM.commit();
-        #if 0 //Not a fn for inkplatecolor
+        #if !defined(ARDUINO_INKPLATECOLOR)
         display.selectDisplayMode(INKPLATE_1BIT);
         #endif
     } else {

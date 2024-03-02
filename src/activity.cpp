@@ -95,13 +95,13 @@ void runActivities(void *params)
                 continue;
             }
             // get & render hass image
-            #if 0
+            #if !defined(ARDUINO_INKPLATECOLOR)
             delaySleep(20);
             #else
             delaySleep(240);
             #endif
             remotePNG(IMAGE_URL);
-            #if 0
+            #if !defined(ARDUINO_INKPLATECOLOR)
             // delaySleep(10);
             #else
             delaySleep(240);
@@ -116,13 +116,13 @@ void runActivities(void *params)
                 continue;
             }
             // get & render image
-            #if 0
+            #if !defined(ARDUINO_INKPLATECOLOR)
             delaySleep(20);
             #else
             delaySleep(240);
             #endif
             remotePNG(getMessage());
-            #if 0
+            #if !defined(ARDUINO_INKPLATECOLOR)
             #else
             delaySleep(240);
             #endif

@@ -19,7 +19,7 @@
 #include <rom/rtc.h>       // Include ESP32 library for RTC (needed for rtc_get_reset_reason() function)
 #include "homeplate.h"
 
-#if 0
+#if !defined(ARDUINO_INKPLATECOLOR)
 Inkplate display(INKPLATE_1BIT);
 #else
 Inkplate display;
@@ -71,7 +71,7 @@ void setup()
     // setup display
     if (sleepBoot)
     {
-        #if 0 // getPanelDeepSleepState ???
+        #if !defined(ARDUINO_INKPLATECOLOR)
         display.preloadScreen(); // copy saved screen state to buffer
         #endif
     }
