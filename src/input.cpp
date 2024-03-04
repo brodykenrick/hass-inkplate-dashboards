@@ -32,74 +32,8 @@ bool checkPad(uint8_t pad)
     return false;
 }
 
-// TODO use a ring buffer for last 5 touchpad events, and if < some threshold, reboot....
-#warning "TODO: Remove this when building on inkplate10"
-void checkButtons(void *params)
-{
-    static int lastDebounceTime = 0;
-    bool button = false;
-    vTaskDelay(3 * SECOND / portTICK_PERIOD_MS); // wait for touchpad calibration to finish before checking
-    Serial.printf("[INPUT] Starting input monitoring...\n");
-    while (true)
-    {
-        // debounce
-        if ((millis() - lastDebounceTime) < DEBOUNCE_DELAY_MS)
-        {
-            vTaskDelay(250 / portTICK_PERIOD_MS);
-            continue;
-        }
-        printDebug("[INPUT] checking for buttons...");
-        i2cStart();
-        // check buttons
-        if (TOUCHPAD_ENABLE)
-        {
-            if (checkPad(PAD1))
-            {
-                Serial.printf("[INPUT] touchpad 1\n");
-                startActivity(HomeAssistant);
-                button = true;
-            }
-            else if (!digitalRead(WAKE_BUTTON))
-            {
-                Serial.printf("[INPUT] wake button\n");
-                startActivity(HomeAssistant);
-                button = true;
-            }
-        }
-
-        if (button)
-        {
-            // clear the interrupt on the MCP
-            readMCPRegister(MCP23017_INTCAPB);
-            lastDebounceTime = millis();
-            button = false;
-            delaySleep(10);
-            printDebugStackSpace();
-        }
-        i2cEnd();
-        vTaskDelay(400 / portTICK_PERIOD_MS);
-    }
-}
 
 #endif // defined(ARDUINO_INKPLATE10)
-
-void startMonitoringButtonsTask()
-{
-    #if defined(ARDUINO_INKPLATE10)
-        // inkplate code needs to be on arduino core or may get i2c errors
-        // use mutex for all inkplate code
-        xTaskCreatePinnedToCore(
-            checkButtons,        /* Task function. */
-            "INPUT_BUTTON_TASK", /* String with name of task. */
-            4096,                /* Stack size */
-            NULL,                /* Parameter passed as input of the task */
-            INPUT_TASK_PRIORITY, /* Priority of the task. */
-            NULL,
-            CONFIG_ARDUINO_RUNNING_CORE);
-    #else
-        Serial.println("[INPUT] Input monitoring not supported by this platform");
-    #endif
-}
 
 void checkBootPads()
 {

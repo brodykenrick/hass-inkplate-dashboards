@@ -60,8 +60,7 @@ bool getWifIFailed();
 bool remotePNG(const char *);
 
 // Input
-//TODO: Just leave the on/off button
-void startMonitoringButtonsTask();
+//TODO: Just leave the on/off button. Probably remove these....
 void checkBootPads();
 void setupWakePins();
 

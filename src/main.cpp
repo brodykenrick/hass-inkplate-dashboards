@@ -1,8 +1,6 @@
-// Next 3 lines are a precaution, you can ignore those, and the example would also work without them
 #if !defined(ARDUINO_INKPLATE10) && !defined(ARDUINO_INKPLATE10V2) && !defined(ARDUINO_INKPLATECOLOR) && !defined(ARDUINO_INKPLATE2)
 #error "No supported board defined, please select Inkplate 2, 6color, 10 or 10v2."
 #endif
-
 
 #if ((defined(ARDUINO_INKPLATECOLOR) + defined(ARDUINO_INKPLATE10) + defined(ARDUINO_INKPLATE10V2) + defined(ARDUINO_INKPLATE2)) > 1)
 #error "Multiple boards defined - You can only define one board."
@@ -83,10 +81,6 @@ void setup()
     #else
     // Can we get any battery or volateg info out of inkplate2 ??
     #endif
-
-
-    Serial.println("[SETUP] starting button task");
-    startMonitoringButtonsTask();
 
     Serial.println("[SETUP] starting time task");
     setupTimeAndSyncTask();
