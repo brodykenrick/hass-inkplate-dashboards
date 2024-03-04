@@ -46,6 +46,9 @@ void ntpSync(void *parameter)
         unsigned long localTime = rtc.getLocalEpoch();
 
         /* RTC */
+        #if !defined(ARDUINO_INKPLATE2)
+        //Note: Inkplate 2 doesn’t have dedicated RTC IC, but it has RTC built-in inside ESP32 that is not as precise as dedicated RTC IC, but it can be used for timekeeping, just time needs to be refreshed (updated) at least once a day using WiFi and NTP. Also, can’t keep time, when there is no power (doesn’t have RTC backup battery).
+
         i2cStart();
         uint32_t rtcEpoch = display.rtcGetEpoch();
         time_t ntp_et = timeClient.getEpochTime();
@@ -57,6 +60,7 @@ void ntpSync(void *parameter)
         long delta_s = (ntp_et - localTime);
         Serial.printf("[TIME] Internal clock was adjusted by %ld seconds\n", delta_s);
         Serial.printf("[TIME] Internal RTC was adjusted by %ld seconds\n", (ntp_et - rtcEpoch));
+        
 
         ntpSynced = true;
         // rtc.offset is unsigned, but it is used as a signed long for negative offsets
@@ -67,12 +71,16 @@ void ntpSync(void *parameter)
         Serial.printf("[TIME] Timezone offset: (%ld) %ld hours\n", offset, (offset/60/60));
         Serial.printf("[TIME] synced local UNIX time Epoch(%ld) %s \n", localTime, fullDateString().c_str());
 
+        
+
         i2cStart();
         bool rtcSet = display.rtcIsSet();
         i2cEnd();
         if (!rtcSet) {
             Serial.printf("[TIME] ERROR: Failed to set RTC!\n");
         }
+
+        #endif
 
         break;
     }
@@ -84,6 +92,8 @@ void ntpSync(void *parameter)
 void setupTimeAndSyncTask()
 {
     unsigned long localTime = rtc.getLocalEpoch();
+    #if !defined(ARDUINO_INKPLATE2)
+    //Note: Inkplate 2 doesn’t have dedicated RTC IC, but it has RTC built-in inside ESP32 that is not as precise as dedicated RTC IC, but it can be used for timekeeping, just time needs to be refreshed (updated) at least once a day using WiFi and NTP. Also, can’t keep time, when there is no power (doesn’t have RTC backup battery).
     i2cStart();
     bool rtcSet = display.rtcIsSet();
     if (rtcSet) {
@@ -92,18 +102,28 @@ void setupTimeAndSyncTask()
         Serial.printf("[TIME] Internal Clock and RTC differ by %ld seconds. local(%ld) RTC(%ld)\n", (localTime - rtcEpoch), localTime, rtcEpoch);
     }
     i2cEnd();
+    #endif
     Serial.printf("[TIME] local time (%lu) %s\n", localTime, fullDateString().c_str());
 
+    #if !defined(ARDUINO_INKPLATE2)
+    //Note: Inkplate 2 doesn’t have dedicated RTC IC, but it has RTC built-in inside ESP32 that is not as precise as dedicated RTC IC, but it can be used for timekeeping, just time needs to be refreshed (updated) at least once a day using WiFi and NTP. Also, can’t keep time, when there is no power (doesn’t have RTC backup battery).
     if (rtcSet && localTime < JAN_1_2000) {
         Serial.printf("[TIME] ERROR: RTC time is too far in past. RTC likely has wrong value!\n");
         rtcSet = false;
     }
+    #endif
 
     #ifdef NTP_SERVER
         // Sync RTC if unset or fresh boot
         bool resync = ((bootCount % (NTP_SYNC_INTERVAL)) == 0);
         if (resync) Serial.printf("[TIME] re-syncing NTP: on boot %d, ever %d\n", bootCount, NTP_SYNC_INTERVAL);
-        if (!rtcSet || !sleepBoot || resync)
+        if (
+            #if !defined(ARDUINO_INKPLATE2)
+            //Note: Inkplate 2 doesn’t have dedicated RTC IC, but it has RTC built-in inside ESP32 that is not as precise as dedicated RTC IC, but it can be used for timekeeping, just time needs to be refreshed (updated) at least once a day using WiFi and NTP. Also, can’t keep time, when there is no power (doesn’t have RTC backup battery).
+            !rtcSet ||
+            #endif
+            !sleepBoot
+            || resync)
         {
             xTaskCreate(
                 ntpSync,           /* Task function. */

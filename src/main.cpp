@@ -1,25 +1,18 @@
 // Next 3 lines are a precaution, you can ignore those, and the example would also work without them
-#if !defined(ARDUINO_INKPLATE10) && !defined(ARDUINO_INKPLATE10V2)&& !defined(ARDUINO_INKPLATECOLOR)
-#error "Wrong board selection for this example, please select Inkplate 10,10v2 or 6."
+#if !defined(ARDUINO_INKPLATE10) && !defined(ARDUINO_INKPLATE10V2) && !defined(ARDUINO_INKPLATECOLOR) && !defined(ARDUINO_INKPLATE2)
+#error "No supported board defined, please select Inkplate 2, 6color, 10 or 10v2."
 #endif
 
-#if defined(ARDUINO_INKPLATE10) && defined(ARDUINO_INKPLATE10V2)
-#error "You can only define one board."
-#endif
 
-#if defined(ARDUINO_INKPLATE10) && defined(ARDUINO_INKPLATECOLOR)
-#error "You can only define one board."
-#endif
-
-#if defined(ARDUINO_INKPLATECOLOR) && defined(ARDUINO_INKPLATE10V2)
-#error "You can only define one board."
+#if ((defined(ARDUINO_INKPLATECOLOR) + defined(ARDUINO_INKPLATE10) + defined(ARDUINO_INKPLATE10V2) + defined(ARDUINO_INKPLATE2)) > 1)
+#error "Multiple boards defined - You can only define one board."
 #endif
 
 #include <driver/rtc_io.h> //ESP32 library used for deep sleep and RTC wake up pins
 #include <rom/rtc.h>       // Include ESP32 library for RTC (needed for rtc_get_reset_reason() function)
 #include "homeplate.h"
 
-#if !defined(ARDUINO_INKPLATECOLOR)
+#if defined(ARDUINO_INKPLATE10) || defined(ARDUINO_INKPLATE10V10)
 Inkplate display(INKPLATE_1BIT);
 #else
 Inkplate display;
@@ -54,24 +47,23 @@ void setup()
     // must be called before checkPads() so buttons can override pre-boot activity
     startActivity(DEFAULT_ACTIVITY);
 
-    // check touchpads for wake event, must be done before display.begin()
-    if (sleepBoot && TOUCHPAD_ENABLE)
-    {
-        Wire.begin(); // this is called again in display.begin(), but it does not appear to be an issue...
-        checkBootPads();
-    }
 
     // Take the mutex
     displayStart();
     i2cStart();
     display.begin();             // Init Inkplate library (you should call this function ONLY ONCE)
+    #if !defined(ARDUINO_INKPLATE2)
+    //Note: Inkplate 2 doesn’t have dedicated RTC IC, but it has RTC built-in inside ESP32 that is not as precise as dedicated RTC IC, but it can be used for timekeeping, just time needs to be refreshed (updated) at least once a day using WiFi and NTP. Also, can’t keep time, when there is no power (doesn’t have RTC backup battery).
+    //https://github.com/SolderedElectronics/Inkplate-Arduino-library/blob/master/examples/Inkplate2/Advanced/DeepSleep/Inkplate2_RTC_Alarm_With_Deep_Sleep/Inkplate2_RTC_Alarm_With_Deep_Sleep.ino#L76
     display.rtcClearAlarmFlag(); // Clear alarm flag from any previous alarm
+    #endif
     setupWakePins();
 
+    //TODO: Can this be removed?
     // setup display
     if (sleepBoot)
     {
-        #if !defined(ARDUINO_INKPLATECOLOR)
+        #if defined(ARDUINO_INKPLATE10) || defined(ARDUINO_INKPLATE10V2)
         display.preloadScreen(); // copy saved screen state to buffer
         #endif
     }
@@ -79,6 +71,7 @@ void setup()
     i2cEnd();
     displayEnd();
 
+    #if !defined(ARDUINO_INKPLATE2)
     // print battery state
     double voltage = 0;
     i2cStart();
@@ -87,20 +80,10 @@ void setup()
     voltage = roundf(voltage * 100) / 100; // rounds to 2 decimal places
     int percent = getBatteryPercent(voltage);
     Serial.printf("[SETUP] Battery: %d%% (%.2fv)\n", percent, voltage);
+    #else
+    // Can we get any battery or volateg info out of inkplate2 ??
+    #endif
 
-    if (USE_SDCARD)
-    {
-        spiStart();
-        if (display.sdCardInit())
-        {
-            Serial.println("[SETUP] SD card init OK");
-        }
-        else
-        {
-            Serial.println("[SETUP] SD card init FAILED");
-        }
-        spiEnd();
-    }
 
     Serial.println("[SETUP] starting button task");
     startMonitoringButtonsTask();

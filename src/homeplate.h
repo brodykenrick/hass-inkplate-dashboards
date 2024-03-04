@@ -60,6 +60,7 @@ bool getWifIFailed();
 bool remotePNG(const char *);
 
 // Input
+//TODO: Just leave the on/off button
 void startMonitoringButtonsTask();
 void checkBootPads();
 void setupWakePins();
@@ -129,9 +130,6 @@ void delaySleep(uint seconds);
 #define BATTERY_VOLTAGE_LOW 3.4			// cut-off is ~3.0V
 #define BATTERY_VOLTAGE_WARNING_SLEEP 3.2	// prevents deep discharge => longer battery live
 #define BATTERY_PERCENT_WARNING 10		// =3.48V
-
-// enable SD card (currently unused)
-#define USE_SDCARD false
 
 // debounce time limit for static activities
 #define MIN_ACTIVITY_RESTART_SECS 5

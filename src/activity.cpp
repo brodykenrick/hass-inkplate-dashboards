@@ -95,17 +95,11 @@ void runActivities(void *params)
                 continue;
             }
             // get & render hass image
-            #if !defined(ARDUINO_INKPLATECOLOR)
-            delaySleep(20);
-            #else
-            delaySleep(240);
-            #endif
+            delaySleep(240); //TODO: check if this can be reduced
+
             remotePNG(IMAGE_URL);
-            #if !defined(ARDUINO_INKPLATECOLOR)
-            // delaySleep(10);
-            #else
-            delaySleep(240);
-            #endif
+            delaySleep(240); //TODO: check if this can be reduced
+
             break;
         case IMG:
             setSleepDuration(TIME_TO_SLEEP_SEC);
@@ -116,16 +110,9 @@ void runActivities(void *params)
                 continue;
             }
             // get & render image
-            #if !defined(ARDUINO_INKPLATECOLOR)
-            delaySleep(20);
-            #else
-            delaySleep(240);
-            #endif
+            delaySleep(240); //TODO: check if this can be reduced
             remotePNG(getMessage());
-            #if !defined(ARDUINO_INKPLATECOLOR)
-            #else
-            delaySleep(240);
-            #endif
+            delaySleep(240); //TODO: check if this can be reduced
 
             break;
         default:

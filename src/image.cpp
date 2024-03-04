@@ -10,7 +10,7 @@ bool remotePNG(const char *url)
     Serial.println(url);
 
     displayStart();
-    #if !defined(ARDUINO_INKPLATECOLOR)
+    #if defined(ARDUINO_INKPLATE10) || defined(ARDUINO_INKPLATE10V2)
     display.selectDisplayMode(INKPLATE_3BIT); // set grayscale mode
     #endif
     display.clearDisplay();                   // refresh the display buffer before rendering.
@@ -38,11 +38,8 @@ bool remotePNG(const char *url)
     displayStart();
     display.display();
     // wait before releasing the i2c bus while the display settles. Helps prevent image fading
-    #if !defined(ARDUINO_INKPLATECOLOR)
     vTaskDelay(0.25 * SECOND/portTICK_PERIOD_MS);
-    #else
-    vTaskDelay(1.0 * SECOND/portTICK_PERIOD_MS);
-    #endif
+
     displayEnd();
     i2cEnd();
     Serial.println("[IMAGE] displaying done.");

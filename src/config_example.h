@@ -39,9 +39,6 @@
 //#define MQTT_NODE_ID "homeplate6"	// defaults to HOSTNAME
 //#define MQTT_DEVICE_NAME "HomePlate6"	// defaults to "HomePlate"
 
-// Disables touchpads if they are overly sensitive and result in phantom touch events
-// Touchpads are not supported on the Inkplate10v2. This must be false if ARDUINO_INKPLATE10V2 is set
-#define TOUCHPAD_ENABLE true
 
 // Timezone
 // see timezone_config.h for options
@@ -53,9 +50,6 @@
 // if there is missing chip near place where "MCP23017-2" is written, but if there is
 // chip soldered, you don't have to uncomment line and use external MCP I/O expander
 //#define ONE_MCP_MODE
-
-// Displays the time from the RTC whenever a new image is loaded
-#define DISPLAY_LAST_UPDATE_TIME true
 
 // keep this to signal the program has a valid config file
 #define CONFIG_H

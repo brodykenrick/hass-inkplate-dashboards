@@ -78,9 +78,12 @@ void lowBatteryCheck()
     {
         return;
     }
+    double voltage = 0;
+    #if !defined(ARDUINO_INKPLATE2)
     i2cStart();
-    double voltage = display.readBattery();
+    voltage = display.readBattery();
     i2cEnd();
+    #endif
 
     // if voltage was < 1, it was a bad reading.
     if (voltage > 1 && voltage <= BATTERY_VOLTAGE_WARNING_SLEEP)

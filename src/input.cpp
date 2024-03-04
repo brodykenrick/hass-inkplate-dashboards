@@ -1,8 +1,5 @@
 #include "homeplate.h"
 
-#if defined(ARDUINO_INKPLATE10V2) && TOUCHPAD_ENABLE
-#error "TOUCHPAD_ENABLE is not supported with ARDUINO_INKPLATE10V2"
-#endif
 
 #define INPUT_TASK_PRIORITY 10
 
@@ -36,7 +33,7 @@ bool checkPad(uint8_t pad)
 }
 
 // TODO use a ring buffer for last 5 touchpad events, and if < some threshold, reboot....
-
+#warning "TODO: Remove this when building on inkplate10"
 void checkButtons(void *params)
 {
     static int lastDebounceTime = 0;

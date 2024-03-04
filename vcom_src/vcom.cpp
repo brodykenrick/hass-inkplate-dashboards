@@ -55,7 +55,7 @@ void programEEPROM()
         writeVCOMToEEPROM(vcomVoltage);
         EEPROM.write(EEPROMaddress, 170);
         EEPROM.commit();
-        #if !defined(ARDUINO_INKPLATECOLOR)
+        #if defined(ARDUINO_INKPLATE10) || defined(ARDUINO_INKPLATE10V2)
         display.selectDisplayMode(INKPLATE_1BIT);
         #endif
     } else {

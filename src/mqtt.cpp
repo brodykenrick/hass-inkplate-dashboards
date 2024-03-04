@@ -77,7 +77,7 @@ void mqttSendTempStatus()
   int temperature = 0;
   i2cStart();
   displayStart();
-  #if !defined(ARDUINO_INKPLATECOLOR)
+  #if defined(ARDUINO_INKPLATE10) || defined(ARDUINO_INKPLATE10V2)
   temperature = temperature + display.readTemperature();
   #else
   temperature = -1;
@@ -103,9 +103,13 @@ void mqttSendTempStatus()
 void mqttSendBatteryStatus()
 {
   double voltage = 0;
+  #if !defined(ARDUINO_INKPLATE2)
   i2cStart();
   voltage = display.readBattery();
   i2cEnd();
+  #else
+  voltage = 0;
+  #endif
 
   voltage = round(voltage * 100) / 100; // rounds to 2 decimal places
 
