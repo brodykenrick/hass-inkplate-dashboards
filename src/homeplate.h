@@ -54,14 +54,10 @@ void wifiStopTask();
 void waitForWiFi();
 bool getWifIFailed();
 
-
-
 // Image
 bool remotePNG(const char *);
 
 // Input
-//TODO: Just leave the on/off button. Probably remove these....
-void checkBootPads();
 void setupWakePins();
 
 // Sleep
@@ -153,13 +149,13 @@ void delaySleep(uint seconds);
 #define MQTT_RESEND_CONFIG_EVERY 10
 #define MQTT_RETAIN_SENSOR_VALUE true
 
-#if !defined MQTT_NODE_ID
+//#if !defined MQTT_NODE_ID
 #define MQTT_NODE_ID HOSTNAME
-#endif
+//#endif
 
-#if !defined MQTT_DEVICE_NAME
-#define MQTT_DEVICE_NAME "HomePlate"
-#endif
+//#if !defined MQTT_DEVICE_NAME
+#define MQTT_DEVICE_NAME HOSTNAME
+//#endif
 
 // Sleep
 #define SLEEP_TIMEOUT_SEC 15

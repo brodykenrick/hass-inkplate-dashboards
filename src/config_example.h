@@ -5,9 +5,18 @@
 // WiFi password
 #define WIFI_PASSWORD "WiFi Password"
 
-// hostname
-// NOTE: if using multiple homeplate devices, you MUST make the hostname unique
+// Hostname
+// NOTE: if using multiple homeplate devices of the same type/size, then you MUST make the hostname unique
+//#define HOSTNAME "homeplate_custom" // Set a hostname if you don't want a default "sized" name
+#if !defined(HOSTNAME)
+#if defined(ARDUINO_INKPLATE2)
+#define HOSTNAME "homeplate2"
+#elif defined(ARDUINO_INKPLATECOLOR)
 #define HOSTNAME "homeplate6"
+#elif defined(ARDUINO_INKPLATE10) || defined(ARDUINO_INKPLATE10V2)
+#define HOSTNAME "homeplate10"
+#endif
+#endif
 
 // How long to sleep between image refreshes
 #define TIME_TO_SLEEP_MIN 20
@@ -37,19 +46,13 @@
 //#define MQTT_PASSWORD "mqtt password"
 // Customize node id and device name if needed
 //#define MQTT_NODE_ID "homeplate6"	// defaults to HOSTNAME
-//#define MQTT_DEVICE_NAME "HomePlate6"	// defaults to "HomePlate"
+//#define MQTT_DEVICE_NAME "HomePlate6"	// defaults to HOSTNAME
 
 
 // Timezone
 // see timezone_config.h for options
 #define TIMEZONE_UTC
 
-// If your Inkplate doesn't have external (or second) MCP I/O expander, you should uncomment next line,
-// otherwise your code could hang out when you send code to your Inkplate.
-// You can easily check if your Inkplate has second MCP by turning it over and 
-// if there is missing chip near place where "MCP23017-2" is written, but if there is
-// chip soldered, you don't have to uncomment line and use external MCP I/O expander
-//#define ONE_MCP_MODE
 
 // keep this to signal the program has a valid config file
 #define CONFIG_H

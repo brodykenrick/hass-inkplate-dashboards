@@ -32,57 +32,9 @@ bool checkPad(uint8_t pad)
     return false;
 }
 
-
 #endif // defined(ARDUINO_INKPLATE10)
-
-void checkBootPads()
-{
-    #if defined(ARDUINO_INKPLATE10)
-        unsigned int key = 0;
-        i2cStart();
-        key = readMCPRegister(MCP23017_INTFB);
-        i2cEnd();
-        if (key) // which pin caused interrupt
-        {
-            // Serial.printf("INTFB: %#x\n", keyInt);
-            //  value of pin at time of interrupt
-            if (key & INT_PAD1)
-            {
-                Serial.println("[INPUT] boot: PAD1");
-                startActivity(HomeAssistant);
-            }
-
-            Serial.println();
-
-            i2cStart();
-            key = readMCPRegister(MCP23017_INTCAPB); // this clears the interrupt
-            i2cEnd();
-            // Serial.printf("INTCAP: %#x\n", keyValue);
-            //  if (keyValue & INT_PAD1)
-            //  {
-            //      Serial.print("PAD1 ");
-            //  }
-            //  if (keyValue & INT_PAD2)
-            //  {
-            //      Serial.print("PAD2 ");
-            //  }
-            //  if (keyValue & INT_PAD3)
-            //  {
-            //      Serial.print("PAD3 ");
-            //  }
-            //  Serial.println();
-        }
-    #endif
-}
 
 void setupWakePins()
 {
-    #if defined(ARDUINO_INKPLATE10)
-        // set which pads can allow wakeup
-        display.setIntPin(PAD1, RISING, IO_INT_ADDR);
-        display.setIntPin(PAD2, RISING, IO_INT_ADDR);
-        display.setIntPin(PAD3, RISING, IO_INT_ADDR);
-    #endif
     pinMode(WAKE_BUTTON, INPUT_PULLUP);
-
 }
