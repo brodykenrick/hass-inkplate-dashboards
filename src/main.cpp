@@ -1,8 +1,8 @@
-#if !defined(ARDUINO_INKPLATE10) && !defined(ARDUINO_INKPLATE10V2) && !defined(ARDUINO_INKPLATECOLOR) && !defined(ARDUINO_INKPLATE2)
-#error "No supported board defined, please select Inkplate 2, 6color, 10 or 10v2."
+#if !defined(ARDUINO_INKPLATE10) && !defined(ARDUINO_INKPLATE5) && !defined(ARDUINO_INKPLATE10V2) && !defined(ARDUINO_INKPLATECOLOR) && !defined(ARDUINO_INKPLATE2)
+#error "No supported board defined, please select Inkplate 2, 5, 6color, 10 or 10v2."
 #endif
 
-#if ((defined(ARDUINO_INKPLATECOLOR) + defined(ARDUINO_INKPLATE10) + defined(ARDUINO_INKPLATE10V2) + defined(ARDUINO_INKPLATE2)) > 1)
+#if ((defined(ARDUINO_INKPLATECOLOR) + defined(ARDUINO_INKPLATE10) + defined(ARDUINO_INKPLATE5) + defined(ARDUINO_INKPLATE10V2) + defined(ARDUINO_INKPLATE2)) > 1)
 #error "Multiple boards defined - You can only define one board."
 #endif
 
@@ -10,7 +10,7 @@
 #include <rom/rtc.h>       // Include ESP32 library for RTC (needed for rtc_get_reset_reason() function)
 #include "homeplate.h"
 
-#if defined(ARDUINO_INKPLATE10) || defined(ARDUINO_INKPLATE10V10)
+#if defined(ARDUINO_INKPLATE10) || defined(ARDUINO_INKPLATE10V10) || defined(ARDUINO_INKPLATE5)
 Inkplate display(INKPLATE_1BIT);
 #else
 Inkplate display;
