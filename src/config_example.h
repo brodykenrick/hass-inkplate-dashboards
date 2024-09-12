@@ -11,6 +11,8 @@
 #if !defined(HOSTNAME)
 #if defined(ARDUINO_INKPLATE2)
 #define HOSTNAME "homeplate2"
+#elif defined(ARDUINO_INKPLATE5)
+#define HOSTNAME "homeplate5"
 #elif defined(ARDUINO_INKPLATECOLOR)
 #define HOSTNAME "homeplate6"
 #elif defined(ARDUINO_INKPLATE10) || defined(ARDUINO_INKPLATE10V2)
